@@ -1,1 +1,1 @@
-python3 src/main.py "https://github.com/occasionalcampaign84/Statsitegen/"
+python3 src/main.py "/Statsitegen/"
