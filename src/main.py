@@ -1,4 +1,4 @@
-import shutil, os
+import shutil, os, sys
 from genpage import generate_page, generate_pages_recursively
 
 def copy(source, dest):
@@ -20,24 +20,19 @@ def display(path):
 		else:
 			print(item_path)
 
-#markdown_path = "/home/arc/Statsitegen/content/index.md"
-#markdown_paths = [
-#"/home/arc/Statsitegen/content/index.md",
-#"/home/arc/Statsitegen/content/blog/glorfindel/index.md",
-#"/home/arc/Statsitegen/content/blog/tom/index.md",
-#"/home/arc/Statsitegen/content/blog/majesty/index.md",
-#"/home/arc/Statsitegen/content/contact/index.md",
-#]
+
 template_path = "/home/arc/Statsitegen/template.html"
-#dest_path = "/home/arc/Statsitegen/public/index.html"
 def main():
+	basepath = sys.argv[1] if len(sys.argv) > 1 else "/"
+	#print("basepath = ", basepath)
 	static_source = "/home/arc/Statsitegen/static/"
 	markdown_source = "/home/arc/Statsitegen/content/"
-	destination = "/home/arc/Statsitegen/public/"
+	destination = "/home/arc/Statsitegen/docs/"
+	#destination = "/home/arc/Statsitegen/public/"
 	#source = "/home/arc/worldbanc/private/"
 	#destination = "/home/arc/worldbanc/private_copytest/"
 	if os.path.exists(destination):
 		shutil.rmtree(destination)
 	copy(static_source,destination)
-	generate_pages_recursively(markdown_source,template_path,destination)
+	generate_pages_recursively(markdown_source,template_path,destination,basepath)
 main()

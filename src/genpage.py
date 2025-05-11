@@ -19,7 +19,7 @@ def generate_page(markdown_path, template_path, dest_path):
     with open(dest_path, 'w') as html_file:
         html_file.write(html)
 
-def generate_pages_recursively(source_path,template_path,dest_path):
+def generate_pages_recursively(source_path,template_path,dest_path,basepath):
     for item in os.listdir(source_path):
         item_path = f"{source_path}{item}"
         if all([os.path.isfile(item_path), len(item)>=3, item[-3:] == ".md"]):
@@ -34,6 +34,8 @@ def generate_pages_recursively(source_path,template_path,dest_path):
             content = markdown_to_html_node(md).to_html()
             html = template.replace("{{ Title }}", title)
             html = html.replace("{{ Content }}", content)
+            html = html.replace('href="/',f'href="{basepath}')
+            html = html.replace('src="/',f'src="{basepath}')
             next_dest = f"{dest_path}{item[:-3]}.html"
             os.makedirs(os.path.dirname(next_dest), exist_ok=True) #Thanks ChatGPT
             with open(next_dest, 'w') as html_file:
@@ -41,7 +43,7 @@ def generate_pages_recursively(source_path,template_path,dest_path):
         elif not os.path.isfile(source_path):
             next_source = f"{source_path}{item}/"
             next_dest = f"{dest_path}{item}/"
-            generate_pages_recursively(next_source,template_path,next_dest)
+            generate_pages_recursively(next_source,template_path,next_dest,basepath)
         
     
 #markdown_path = "/home/arc/Statsitegen/content/index.md"
